@@ -12,7 +12,7 @@ templates:
     author-name: Nobuo Yamashita
     author-email: nobsun@gmail.com
     category: Experiment
-    copyright: 'Copyright: (c) 2018 Nobuo Yamashita'
+    copyright: 'Copyright: (c) 2019 Nobuo Yamashita'
     github-username: nobsun
 
-default-template: "/home/nobsun/.stack/my.hsfiles"
+default-template: "/home/nobsun/.stack/ny.hsfiles"
