@@ -1,5 +1,1 @@
-#GHC_VERSION=ghc-7.10.3
-GHC_VERSION=ghc-8.0.2
-GHC_PATH=$HOME/.stack/programs/x86_64-linux/$GHC_VERSION/bin
-export PATH=$HOME/.local/bin:$GHC_PATH:$PATH
-# export PATH=$HOME/.local/bin:$PATH
+export PATH=$HOME/.local/bin:$PATH

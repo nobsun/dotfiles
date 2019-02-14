@@ -23,9 +23,9 @@ description:         Please see the README on GitHub at <https://github.com/{{gi
 dependencies:
 - base >= 4.7 && < 5
 - unicode-show >= 0.1.0.3
-- markdown-unlit >= 0.5.0
-- doctest >= 0.15.0
-- hspec >= 2.5.5
+- markdown-unlit
+- doctest
+- hspec
 
 library:
   source-dirs: src
@@ -57,8 +57,17 @@ import Distribution.Simple
 main = defaultMain
 
 {-# START_FILE test/Spec.hs #-}
+{-# OPTIONS -F -pgmF hspec-discover -optF --module-name=Spec #-}
+
+{-# START_FILE test/Main.hs #-}
+module Main where
+
+import Test.Hspec.Runner
+import Test.Hspec.Formatters
+import qualified Spec
+
 main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+main = hspecWith defaultConfig {configFormatter = Just progress} Spec.spec
 
 {-# START_FILE src/Lib.hs #-}
 module Lib
@@ -120,11 +129,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .stack-work/
 {{name}}.cabal
 error.log
-*/error.log
+core
+*.hi
+*.o
 *~
 
 {-# START_FILE .ghci #-}
-:set -pgmL markdown-unlit
+-- :set -pgmL markdown-unlit
 :set -interactive-print=Text.Show.Unicode.uprint
 :set +s
 :set +t
