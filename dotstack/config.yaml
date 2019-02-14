@@ -7,4 +7,4 @@ templates:
     copyright: 'Copyright: (c) 2019 Nobuo Yamashita'
     github-username: nobsun
 
-default-template: "/home/nobsun/.stack/nobsun.hsfiles"
+default-template: "/home/nobsun/.stack/ny.hsfiles"
