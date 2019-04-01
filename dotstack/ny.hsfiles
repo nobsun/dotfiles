@@ -22,10 +22,13 @@ description:         Please see the README on GitHub at <https://github.com/{{gi
 
 dependencies:
 - base >= 4.7 && < 5
-- unicode-show >= 0.1.0.3
-- markdown-unlit >= 0.5.0
-- doctest >= 0.15.0
-- hspec >= 2.5.5
+- unicode-show
+# - markdown-unlit
+- doctest
+- bytestring
+- utf8-string
+- hspec
+- main-tester
 
 library:
   source-dirs: src
@@ -43,7 +46,17 @@ executables:
 
 tests:
   {{name}}-test:
-    main:                Spec.hs
+    main:                spec.hs
+    source-dirs:         test
+    # ghc-options:
+    # - -threaded
+    # - -rtsopts
+    # - -with-rtsopts=-N
+    dependencies:
+    - {{name}}
+
+  {{name}}-doctest:
+    main:                doctests.hs
     source-dirs:         test
     # ghc-options:
     # - -threaded
@@ -56,17 +69,63 @@ tests:
 import Distribution.Simple
 main = defaultMain
 
-{-# START_FILE test/Spec.hs #-}
-main :: IO ()
-main = putStrLn "Test suite not yet implemented"
-
 {-# START_FILE src/Lib.hs #-}
 module Lib
     ( someFunc
     ) where
 
+-- | 「なんか関数」を標準出力に印字する
+-- >>> someFunc
+-- なんか関数
+
 someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+someFunc = putStrLn "なんか函数"
+
+{-# START_FILE test/spec.hs #-}
+{-# OPTIONS -F -pgmF hspec-discover #-}
+
+{-# START_FILE test/LibSpec.hs #-}
+{-# LANGUAGE OverloadedStrings #-}
+module LibSpec
+  ( spec
+  ) where
+
+import Data.String
+import qualified Codec.Binary.UTF8.String as U
+import qualified Data.ByteString as B
+import Test.Main
+import Test.Hspec
+import Text.Show.Unicode
+import Lib
+
+newtype UString a = UString a deriving Eq
+
+ustring :: B.ByteString -> UString String
+ustring = UString . U.decode . B.unpack
+
+instance IsString a => IsString (UString a) where
+  fromString = UString . fromString
+  
+instance Show a => Show (UString a) where
+  show (UString s) = ushow s
+
+spec :: Spec
+spec = describe "someFunc" $ do
+  { it "「なんか関数」を標準出力に印字する." $ do
+    { result <- captureProcessResult Lib.someFunc
+    ; prExitCode result `shouldBe` ExitSuccess
+    ; prStderr result `shouldSatisfy` B.null
+    ; ustring (prStdout result) `shouldBe` "なんか関数\n"
+    }
+  }
+
+{-# START_FILE test/doctests.hs #-}
+module Main where
+
+import Test.DocTest
+
+main :: IO ()
+main = doctest ["src/Lib.hs"]
 
 {-# START_FILE app/Main.hs #-}
 module Main where
@@ -124,7 +183,7 @@ error.log
 *~
 
 {-# START_FILE .ghci #-}
-:set -pgmL markdown-unlit
+-- :set -pgmL markdown-unlit
+:set prompt ">>> "
 :set -interactive-print=Text.Show.Unicode.uprint
-:set +s
 :set +t
