@@ -23,7 +23,6 @@ description:         Please see the README on GitHub at <https://github.com/{{gi
 dependencies:
 - base >= 4.7 && < 5
 - unicode-show
-# - markdown-unlit
 - doctest
 - bytestring
 - utf8-string
@@ -69,6 +68,22 @@ tests:
 import Distribution.Simple
 main = defaultMain
 
+<<<<<<< HEAD:dotstack/ny.hsfiles
+=======
+{-# START_FILE test/Spec.hs #-}
+{-# OPTIONS -F -pgmF hspec-discover -optF --module-name=Spec #-}
+
+{-# START_FILE test/Main.hs #-}
+module Main where
+
+import Test.Hspec.Runner
+import Test.Hspec.Formatters
+import qualified Spec
+
+main :: IO ()
+main = hspecWith defaultConfig {configFormatter = Just progress} Spec.spec
+
+>>>>>>> 839253cd686175f2ddd4c8d9daf85d26ab1fc5a1:dotstack/your.hsfiles
 {-# START_FILE src/Lib.hs #-}
 module Lib
     ( someFunc
@@ -179,11 +194,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 .stack-work/
 {{name}}.cabal
 error.log
-*/error.log
+core
+*.hi
+*.o
 *~
 
 {-# START_FILE .ghci #-}
 -- :set -pgmL markdown-unlit
+<<<<<<< HEAD:dotstack/ny.hsfiles
 :set prompt ">>> "
+=======
+>>>>>>> 839253cd686175f2ddd4c8d9daf85d26ab1fc5a1:dotstack/your.hsfiles
 :set -interactive-print=Text.Show.Unicode.uprint
 :set +t
