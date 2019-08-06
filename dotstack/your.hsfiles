@@ -53,6 +53,7 @@ tests:
     # - -with-rtsopts=-N
     dependencies:
     - {{name}}
+    - hspec
 
   {{name}}-doctest:
     main:                doctests.hs
@@ -67,19 +68,6 @@ tests:
 {-# START_FILE Setup.hs #-}
 import Distribution.Simple
 main = defaultMain
-
-{-# START_FILE test/Spec.hs #-}
-{-# OPTIONS -F -pgmF hspec-discover -optF --module-name=Spec #-}
-
-{-# START_FILE test/Main.hs #-}
-module Main where
-
-import Test.Hspec.Runner
-import Test.Hspec.Formatters
-import qualified Spec
-
-main :: IO ()
-main = hspecWith defaultConfig {configFormatter = Just progress} Spec.spec
 
 {-# START_FILE src/Lib.hs #-}
 module Lib
@@ -197,7 +185,6 @@ core
 *~
 
 {-# START_FILE .ghci #-}
--- :set -pgmL markdown-unlit
 :set prompt ">>> "
 :set -interactive-print=Text.Show.Unicode.uprint
 :set +t
