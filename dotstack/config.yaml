@@ -7,4 +7,4 @@ templates:
     copyright: 'Copyright: (c) 2019 Your Name'
     github-username: your_github_name
 
-default-template: "/home/nobsun/.stack/your.hsfiles"
+default-template: "/home/nobsun/.stack/templates/your.hsfiles"
